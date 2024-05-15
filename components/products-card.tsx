@@ -55,7 +55,7 @@ export default function ProductsCard() {
     ];
 
     return (
-        <div className="gap-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="lg:gap-10 gap-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-16 py-0 lg:p-0">
             {list.map((item, index) => (
                 <Card shadow="sm" key={index} isPressable className="w-full h-auto">
                     <CardBody className="overflow-visible p-0">

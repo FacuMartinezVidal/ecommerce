@@ -49,7 +49,7 @@ export const Navbar = () => {
     );
 
     const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
-
+    const disclosure = useDisclosure();
     return (
         <NextUINavbar
             maxWidth="xl"
@@ -118,7 +118,7 @@ export const Navbar = () => {
                                 variant="flat"
                                 onPress={onOpen}
                             >
-                                Sign up
+                                Log in
                             </Button>
                             <Modal
                                 isOpen={isOpen}
@@ -170,7 +170,7 @@ export const Navbar = () => {
                                                 <Button
                                                     className="font-bold bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] "
                                                     variant="shadow" onPress={onClose}>
-                                                    Sign in
+                                                    Log in
                                                 </Button>
                                             </ModalFooter>
                                         </>
@@ -189,7 +189,7 @@ export const Navbar = () => {
                             color="default"
                             variant="shadow"
                         >
-                            Log in
+                            Sign up
                         </Button>
                     )}
                 </NavbarItem>
@@ -211,17 +211,96 @@ export const Navbar = () => {
                 <div className="mx-4 mt-2 flex flex-col gap-2">
                     {siteConfig.navMenuItems.map((item, index) => (
                         <NavbarMenuItem key={`${item}-${index}`}>
-                            <NextLink
-                                className={
-                                    index === 2
-                                        ? "bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]"
-                                        : ""
-                                }
-                                href={item.href}
-                            >
-                                {item.label}
-                            </NextLink>
+                            {index < 3 &&
+                                <NextLink
+                                    href={item.href}
+                                >
+                                    {item.label}
+                                </NextLink>
+                            }
+                            {index == 3 && (
+                                <>
+                                    <NextLink
+                                        className="font-bold"
+                                        onClick={disclosure.onOpen}
+                                        href="#"
+                                    >
+                                        Log in
+                                    </NextLink>
+                                    <Modal
+                                        isOpen={disclosure.isOpen}
+                                        onOpenChange={disclosure.onOpenChange}
+                                        placement="center"
+                                    >
+                                        <ModalContent>
+                                            {(onClose) => (
+                                                <>
+                                                    <ModalHeader className="flex flex-col gap-1">Log in</ModalHeader>
+                                                    <ModalBody>
+                                                        <Input
+                                                            autoFocus
+                                                            endContent={
+                                                                <MailIcon
+                                                                    className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
+                                                            }
+                                                            label="Email"
+                                                            placeholder="Enter your email"
+                                                            variant="bordered"
+                                                        />
+                                                        <Input
+                                                            endContent={
+                                                                <LockIcon
+                                                                    className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
+                                                            }
+                                                            label="Password"
+                                                            placeholder="Enter your password"
+                                                            type="password"
+                                                            variant="bordered"
+                                                        />
+                                                        <div className="flex py-2 px-1 justify-between">
+                                                            <Checkbox
+                                                                classNames={{
+                                                                    label: "text-small",
+                                                                }}
+                                                            >
+                                                                Remember me
+                                                            </Checkbox>
+                                                            <Link color="primary" href="#" size="sm">
+                                                                Forgot password?
+                                                            </Link>
+                                                        </div>
+                                                    </ModalBody>
+                                                    <ModalFooter>
+                                                        <Button color="default" variant="flat"
+                                                                onPress={disclosure.onClose}>
+                                                            Close
+                                                        </Button>
+                                                        <Button
+                                                            className="font-bold bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] "
+                                                            variant="shadow" onPress={disclosure.onClose}>
+                                                            Sign in
+                                                        </Button>
+                                                    </ModalFooter>
+                                                </>
+                                            )}
+                                        </ModalContent>
+                                    </Modal>
+                                </>
+                            )
+                            }
+
+                            {index == 4 && (
+                                <NextLink
+                                    href="/auth/register"
+                                >
+                                    <Link
+                                        className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]">
+                                        <span className='text-lg'>Sing up</span>
+                                    </Link>
+                                </NextLink>
+                            )}
                         </NavbarMenuItem>
+
                     ))}
                 </div>
             </NavbarMenu>

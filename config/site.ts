@@ -19,16 +19,24 @@ export const siteConfig = {
     ],
     navMenuItems: [
         {
-            label: "Profile",
-            href: "/profile",
+            label: "Home",
+            href: "/",
         },
         {
             label: "Products",
             href: "/products",
         },
         {
-            label: "Logout",
-            href: "/logout",
+            label: "Profile",
+            href: "/profile",
+        },
+        {
+            label: "Sign in",
+            href: "#",
+        },
+        {
+            label: "Log in",
+            href: "/register",
         },
     ],
     links: {
