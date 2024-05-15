@@ -196,10 +196,10 @@ export const Navbar = () => {
             </NavbarContent>
 
             <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-                <Link isExternal href={siteConfig.links.twitter} aria-label="Github">
-                    <TwitterIcon className="text-default-500"/>
+                <Link isExternal href={siteConfig.links.twitter} aria-label="Instagram">
+                    <InstagramIcon className="text-default-500"/>
                 </Link>
-                <Link isExternal href={siteConfig.links.instagram} aria-label="Github">
+                <Link isExternal href={siteConfig.links.instagram} aria-label="Twitter">
                     <TwitterIcon className="text-default-500"/>
                 </Link>
                 <ThemeSwitch/>
