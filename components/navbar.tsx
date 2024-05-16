@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, {useState} from "react";
 import {
     Navbar as NextUINavbar,
     NavbarBrand,
@@ -20,8 +20,9 @@ import {Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure}
 import clsx from "clsx";
 import {usePathname} from "next/navigation";
 import {ThemeSwitch} from "@/components/theme-switch";
-import {InstagramIcon, LockIcon, Logo, MailIcon, SearchIcon, TwitterIcon} from "@/components/icons";
-import {Checkbox} from "@nextui-org/react";
+import {CartIcon, InstagramIcon, LockIcon, Logo, MailIcon, SearchIcon, TwitterIcon} from "@/components/icons";
+import {Avatar, Checkbox, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
+
 
 export const Navbar = () => {
     const path = usePathname();
@@ -41,15 +42,21 @@ export const Navbar = () => {
             }
             labelPlacement="outside"
             placeholder="Search..."
-            startContent={
-                <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0"/>
-            }
+            startContent={<SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0"/>}
             type="search"
         />
     );
 
+    const [isLogin, setIsLogin] = useState(false);
+
     const {isOpen, onOpen, onClose, onOpenChange} = useDisclosure();
     const disclosure = useDisclosure();
+
+    const handlerLogin = () => {
+        setIsLogin(!isLogin);
+        onClose();
+    };
+
     return (
         <NextUINavbar
             maxWidth="xl"
@@ -84,7 +91,9 @@ export const Navbar = () => {
                             <NextLink
                                 className={clsx(
                                     linkStyles({color: "foreground"}),
-                                    isActive(item.href) ? "text-default-500 font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] active" : ""
+                                    isActive(item.href)
+                                        ? "text-default-500 font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] active"
+                                        : ""
                                 )}
                                 href={item.href}
                                 aria-current="page"
@@ -96,10 +105,7 @@ export const Navbar = () => {
                 </ul>
             </NavbarContent>
 
-            <NavbarContent
-                className="hidden sm:flex basis-1/5 sm:basis-full"
-                justify="end"
-            >
+            <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
                 <NavbarItem className="hidden sm:flex gap-2">
                     <Link isExternal href={siteConfig.links.twitter} aria-label="Twitter">
                         <InstagramIcon className="text-default-500"/>
@@ -111,20 +117,12 @@ export const Navbar = () => {
                 </NavbarItem>
                 <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
                 <NavbarItem className="hidden md:flex">
-                    {path !== "/auth/register" && (
+                    {path !== "/auth/register" && !isLogin ? (
                         <>
-                            <Button
-                                className="font-bold"
-                                variant="flat"
-                                onPress={onOpen}
-                            >
+                            <Button className="font-bold" variant="flat" onPress={onOpen}>
                                 Log in
                             </Button>
-                            <Modal
-                                isOpen={isOpen}
-                                onOpenChange={onOpenChange}
-                                placement="top-center"
-                            >
+                            <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
                                 <ModalContent>
                                     {(onClose) => (
                                         <>
@@ -132,19 +130,15 @@ export const Navbar = () => {
                                             <ModalBody>
                                                 <Input
                                                     autoFocus
-                                                    endContent={
-                                                        <MailIcon
-                                                            className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
-                                                    }
+                                                    endContent={<MailIcon
+                                                        className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>}
                                                     label="Email"
                                                     placeholder="Enter your email"
                                                     variant="bordered"
                                                 />
                                                 <Input
-                                                    endContent={
-                                                        <LockIcon
-                                                            className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>
-                                                    }
+                                                    endContent={<LockIcon
+                                                        className="text-2xl text-default-400 pointer-events-none flex-shrink-0"/>}
                                                     label="Password"
                                                     placeholder="Enter your password"
                                                     type="password"
@@ -168,8 +162,8 @@ export const Navbar = () => {
                                                     Close
                                                 </Button>
                                                 <Button
-                                                    className="font-bold bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] "
-                                                    variant="shadow" onPress={onClose}>
+                                                    className="font-bold bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]"
+                                                    variant="shadow" onPress={handlerLogin}>
                                                     Log in
                                                 </Button>
                                             </ModalFooter>
@@ -178,20 +172,59 @@ export const Navbar = () => {
                                 </ModalContent>
                             </Modal>
                         </>
+                    ) : (
+                        <>
+                            <Button className="font-bold bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] mr-4"
+                                    variant="shadow"
+                            >
+                                <CartIcon heigt="1.8rem" width="1.8rem"/>
+                            </Button>
+                            <Dropdown placement="bottom-end">
+                                <DropdownTrigger>
+                                    <Avatar
+                                        isBordered
+                                        as="button"
+                                        className="transition-transform"
+                                        color="secondary"
+                                        name="Jason Hughes"
+                                        size="sm"
+                                        src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                                    />
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="Profile Actions" variant="flat">
+                                    <DropdownItem key="profile" className="h-14 gap-2">
+                                        <p className="font-semibold">Signed in as</p>
+                                        <p className="font-semibold">zoey@example.com</p>
+                                    </DropdownItem>
+                                    <DropdownItem key="settings"><NextLink href="/profile">My
+                                        profile</NextLink></DropdownItem>
+                                    <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                                    <DropdownItem key="logout" color="danger">
+                                        <button onClick={handlerLogin}>
+                                            Log Out
+                                        </button>
+
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+
+
+                        </>
+
                     )}
                 </NavbarItem>
                 <NavbarItem className="hidden md:flex">
-                    {path !== "/auth/register" && (
+                    {path !== "/auth/register" && !isLogin ? (
                         <Button
                             as={NextLink}
-                            className="font-bold bg-gradient-to-r from-[#FF1CF7] to-[#b249f8] "
+                            className="font-bold bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]"
                             href="/auth/register"
                             color="default"
                             variant="shadow"
                         >
                             Sign up
                         </Button>
-                    )}
+                    ) : null}
                 </NavbarItem>
             </NavbarContent>
 
@@ -211,43 +244,43 @@ export const Navbar = () => {
                 <div className="mx-4 mt-2 flex flex-col gap-2">
                     {siteConfig.navMenuItems.map((item, index) => (
                         <NavbarMenuItem key={`${item}-${index}`}>
-                            {index < 3 &&
-                                <NextLink
-                                    href={item.href}
-                                >
-                                    <Link
-                                        className="text-default-white
-                                        ">
-                                        <span className='text-lg'>{item.label}</span>
-                                    </Link>
-                                </NextLink>
-                            }
-                            {index == 3 && (
-                                <>
-                                    <NextLink
-                                        className="font-bold"
-                                        onClick={disclosure.onOpen}
-                                        href="/auth/login"
-                                    >
-                                        Log in
-                                    </NextLink>
-                                </>
-                            )
-                            }
-
-                            {index == 4 && (
-                                <NextLink
-                                    href="/auth/register"
-                                >
-                                    <Link
-                                        className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]">
-                                        <span className='text-lg'>Sing up</span>
+                            {index < 3 && (
+                                <NextLink href={item.href}>
+                                    <Link className="text-default-white">
+                                        <span className="text-lg">{item.label}</span>
                                     </Link>
                                 </NextLink>
                             )}
+                            {index === 3 && !isLogin ? (
+                                <>
+                                    <NextLink className="font-bold" onClick={disclosure.onOpen} href="/auth/login">
+                                        Log in
+                                    </NextLink>
+                                </>
+                            ) : null}
+                            {index === 4 && !isLogin ? (
+                                <NextLink href="/auth/register">
+                                    <Link
+                                        className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]">
+                                        <span className="text-lg">Sign up</span>
+                                    </Link>
+                                </NextLink>
+                            ) : null}
                         </NavbarMenuItem>
-
                     ))}
+                    {
+                        isLogin && (
+                            <NavbarItem>
+                                <NextLink href="/">
+                                    <Link onClick={handlerLogin}
+                                          className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]">
+                                        <span className="text-lg">Log out</span>
+                                    </Link>
+                                </NextLink>
+                            </NavbarItem>
+                        )
+                    }
+                    
                 </div>
             </NavbarMenu>
         </NextUINavbar>

@@ -56,6 +56,23 @@ export const EyeSlashFilledIcon = ({...props}) => (
     </svg>
 );
 
+
+export const CartIcon = ({...props}) => (
+    <svg
+        aria-hidden="true"
+        fill="none"
+        focusable="false"
+        role="presentation"
+        viewBox="0 0 24 24"
+        {...props}
+    >
+        <path
+            d="M3 3h2l3.6 7.59L5.25 14.04C5.09 14.38 5 14.74 5 15.13c0 1.1.9 2 2 2h12v-2H7.42c-.19 0-.37-.07-.5-.21L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21 4H6l-.94-2H3zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+            fill="currentColor"
+        />
+    </svg>
+);
+
 export const EyeFilledIcon = ({...props}) => (
     <svg
         aria-hidden="true"

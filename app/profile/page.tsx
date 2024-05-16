@@ -58,7 +58,7 @@ export default function ProfileForm() {
                 </h1>
                 <h1 className={title()}>
                     <span
-                        className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]">Account</span>
+                        className="bg-clip-text text-transparent bg-gradient-to-r from-[#FF1CF7] to-[#b249f8]">Profile</span>
                 </h1>
                 {/*<h2 className={subtitle({class: "mt-4"})}>*/}
                 {/*    Beautiful, fast and modern React UI library.*/}
